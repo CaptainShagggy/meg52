@@ -1,0 +1,2492 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEG 52 - Premium Virtual Classroom</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --dark-gradient: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --shadow-xl: 0 35px 60px -12px rgba(0, 0, 0, 0.35);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--dark-gradient);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Advanced Background System */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            overflow: hidden;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.4;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--primary-gradient);
+            top: -200px;
+            left: -200px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--secondary-gradient);
+            top: 50%;
+            right: -150px;
+            animation-delay: -7s;
+        }
+
+        .orb-3 {
+            width: 500px;
+            height: 500px;
+            background: var(--accent-gradient);
+            bottom: -250px;
+            left: 30%;
+            animation-delay: -14s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+
+        .mesh-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 25% 25%, rgba(120, 119, 198, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(255, 107, 107, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(78, 205, 196, 0.1) 0%, transparent 50%);
+            animation: meshMove 30s ease-in-out infinite;
+        }
+
+        @keyframes meshMove {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(180deg); }
+        }
+
+        .grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 100px 100px;
+            animation: gridSlide 40s linear infinite;
+        }
+
+        @keyframes gridSlide {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100px, 100px); }
+        }
+
+        /* Particle System */
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -5;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            border-radius: 50%;
+            animation: particleRise 8s linear infinite;
+        }
+
+        @keyframes particleRise {
+            0% {
+                transform: translateY(100vh) scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+                transform: translateY(90vh) scale(1) rotate(36deg);
+            }
+            90% {
+                opacity: 1;
+                transform: translateY(10vh) scale(1) rotate(324deg);
+            }
+            100% {
+                transform: translateY(-10vh) scale(0) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(12, 12, 12, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        header.scrolled {
+            background: rgba(12, 12, 12, 0.95);
+            box-shadow: var(--shadow-lg);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .logo:hover::after {
+            width: 100%;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: block;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--glass-bg);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-links a:hover::before {
+            left: 0;
+        }
+
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .mobile-toggle:hover {
+            background: var(--glass-bg);
+        }
+
+        .mobile-toggle span {
+            width: 24px;
+            height: 2px;
+            background: var(--text-primary);
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 1000px;
+            z-index: 10;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease-in-out infinite, fadeInUp 1s ease-out 0.4s both;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.25rem, 3vw, 2rem);
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .hero-description {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 1s ease-out 0.8s both;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 1s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .btn-secondary {
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* Sections */
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Topic Cards */
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .topic-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .topic-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .topic-card:hover::before {
+            left: 100%;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-xl);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .topic-card:hover .topic-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .topic-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary-gradient);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .topic-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .topic-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .topic-stats {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .topic-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* Game Section */
+        .game-section {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 3rem;
+            backdrop-filter: blur(20px);
+            margin: 4rem 0;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .game-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .game-score {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #4facfe;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 20px rgba(79, 172, 254, 0.5);
+        }
+
+        .color-display {
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+            margin: 2rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: #000;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .game-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            max-width: 400px;
+            margin: 2rem auto;
+        }
+
+        .game-option {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1rem;
+            color: var(--text-primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .game-option:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .game-option.correct {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-color: #10b981;
+            animation: correctPulse 0.6s ease;
+        }
+
+        .game-option.incorrect {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border-color: #ef4444;
+            animation: shake 0.6s ease;
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(12, 12, 12, 0.95), rgba(26, 26, 46, 0.95));
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 3rem;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            backdrop-filter: blur(20px);
+            animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .modal-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            line-height: 1.7;
+        }
+
+        .modal-section {
+            margin-bottom: 3rem;
+        }
+
+        .modal-section h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #4facfe;
+        }
+
+        .modal-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .modal-section li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        .modal-section li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .resource-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .resource-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .resource-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #4facfe;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .resource-description {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background: rgba(12, 12, 12, 0.95);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                border-top: 1px solid var(--glass-border);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-toggle {
+                display: flex;
+            }
+
+            .topics-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .topic-card {
+                padding: 2rem;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+
+            .game-options {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 2rem;
+                margin: 1rem;
+            }
+
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scroll Animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Loading States */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #4facfe;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Termine Section */
+        .termine-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .termine-table-wrapper {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .termine-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        .termine-table th {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            border: none;
+        }
+
+        .termine-table th:first-child {
+            border-top-left-radius: 12px;
+        }
+
+        .termine-table th:last-child {
+            border-top-right-radius: 12px;
+        }
+
+        .termine-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+        }
+
+        .termine-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .termin-type {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .termin-type.klausur {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .termin-type.test {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+
+        .termin-type.projekt {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .weitere-termine {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+        }
+
+        .termine-liste {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .termin-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .termin-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(5px);
+        }
+
+        .termin-date {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .termin-content {
+            flex: 1;
+        }
+
+        .termin-content strong {
+            display: block;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+            font-size: 1rem;
+        }
+
+        .termin-content span {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, rgba(12, 12, 12, 0.95), rgba(26, 26, 46, 0.95));
+            border-top: 1px solid var(--glass-border);
+            padding: 3rem 2rem 1rem;
+            margin-top: 6rem;
+            backdrop-filter: blur(20px);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .footer-section h4 {
+            color: #4facfe;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .footer-section p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: #4facfe;
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 2rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid var(--glass-border);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* Responsive Updates */
+        @media (max-width: 768px) {
+            .termine-container {
+                gap: 2rem;
+            }
+
+            .termine-table-wrapper,
+            .weitere-termine {
+                padding: 1.5rem;
+            }
+
+            .termine-table {
+                font-size: 0.875rem;
+            }
+
+            .termine-table th,
+            .termine-table td {
+                padding: 0.75rem 0.5rem;
+            }
+
+            .termin-item {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .termin-date {
+                align-self: flex-start;
+                min-width: auto;
+            }
+
+            .footer {
+                padding: 2rem 1rem 1rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background System -->
+    <div class="background-container">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+        <div class="mesh-gradient"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- Particles -->
+    <div class="particles-container" id="particles"></div>
+
+    <!-- Header -->
+    <header id="header">
+        <nav>
+            <div class="logo" onclick="scrollToTop()">MEG 52</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="https://drive.google.com/drive/folders/1trzdKdUuYYplQajNlgwaq4hJ8vHZ5kPj?usp=drive_link" target="_blank"><i class="fas fa-cloud"></i> Cloud</a></li>
+                <li><a href="https://docs.google.com/spreadsheets/d/1dylNsn4PBHrBrijVYslAuRCGTi6QA3fXA6bJdaIzcIY/edit?gid=1639039000#gid=1639039000" target="_blank"><i class="fas fa-calendar"></i> Stundenplan</a></li>
+                <li><a href="https://moodle.bfw-koblenz.de/course/view.php?id=230" target="_blank"><i class="fas fa-utensils"></i> Speiseplan</a></li>
+                <li><a href="#termine"><i class="fas fa-calendar-alt"></i> Termine</a></li>
+                <li><a href="https://zfamedien.de/pruefungen/mediengestalter-digital-und-print/beispielpruefungen/" target="_blank"><i class="fas fa-file-alt"></i> Beispielprüfungen</a></li>
+                <li><a href="https://zfamedien.de/pruefungen/" target="_blank"><i class="fas fa-calendar-check"></i> Prüfungstermine</a></li>
+                <li><a href="https://booksonline.rheinwerk-verlag.de/library/" target="_blank"><i class="fas fa-book"></i> Fachbücher</a></li>
+                <li><a href="https://moodle.bfw-koblenz.de/login/index.php" target="_blank"><i class="fas fa-graduation-cap"></i> Moodle</a></li>
+            </ul>
+            <div class="mobile-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-star"></i>
+                <span>Premium Virtual Classroom</span>
+            </div>
+            <h1>MEG 52</h1>
+            <div class="hero-subtitle">Die beste Mediengestalterklasse seit 1753</div>
+            <p class="hero-description">
+                <strong>...und wehe einer von euch beendet die Umschulungsmaßnahme! Ein TEAM!</strong>
+            </p>
+            <div class="hero-actions">
+                <a href="#topics" class="btn btn-primary">
+                    <i class="fas fa-rocket"></i>
+                    Lernthemen entdecken
+                </a>
+                <a href="#game" class="btn btn-secondary">
+                    <i class="fas fa-gamepad"></i>
+                    Color Match spielen
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Topics Section -->
+    <section class="section" id="topics">
+        <div class="section-header scroll-reveal">
+            <h2 class="section-title">Lernthemen</h2>
+            <p class="section-subtitle">Entdecke die Welt der Mediengestaltung mit unseren umfassenden Lernmodulen</p>
+        </div>
+
+        <div class="topics-grid">
+            <div class="topic-card scroll-reveal" onclick="openModal('typography')">
+                <div class="topic-icon">
+                    <i class="fas fa-font"></i>
+                </div>
+                <h3 class="topic-title">Typografie</h3>
+                <p class="topic-description">Meistere die Kunst der Schriftgestaltung und lerne, wie Typografie Emotionen und Botschaften vermittelt.</p>
+                <div class="topic-stats">
+                    <div class="stat">
+                        <i class="fas fa-clock"></i>
+                        <span>8 Stunden</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-layer-group"></i>
+                        <span>12 Module</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-star"></i>
+                        <span>Fortgeschritten</span>
+                    </div>
+                </div>
+                <div class="topic-tags">
+                    <span class="tag">Schriftarten</span>
+                    <span class="tag">Layout</span>
+                    <span class="tag">Hierarchie</span>
+                    <span class="tag">Kerning</span>
+                </div>
+            </div>
+
+            <div class="topic-card scroll-reveal" onclick="openModal('design')">
+                <div class="topic-icon">
+                    <i class="fas fa-palette"></i>
+                </div>
+                <h3 class="topic-title">Gestaltung & Design</h3>
+                <p class="topic-description">Verstehe die Grundprinzipien des Designs und entwickle ein Auge für ästhetische Komposition.</p>
+                <div class="topic-stats">
+                    <div class="stat">
+                        <i class="fas fa-clock"></i>
+                        <span>10 Stunden</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-layer-group"></i>
+                        <span>15 Module</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-star"></i>
+                        <span>Grundlagen</span>
+                    </div>
+                </div>
+                <div class="topic-tags">
+                    <span class="tag">Farbtheorie</span>
+                    <span class="tag">Komposition</span>
+                    <span class="tag">Balance</span>
+                    <span class="tag">Kontrast</span>
+                </div>
+            </div>
+
+            <div class="topic-card scroll-reveal" onclick="openModal('html')">
+                <div class="topic-icon">
+                    <i class="fab fa-html5"></i>
+                </div>
+                <h3 class="topic-title">HTML5 & Semantik</h3>
+                <p class="topic-description">Baue solide Webfundamente mit modernem, semantischem HTML5 und barrierefreien Strukturen.</p>
+                <div class="topic-stats">
+                    <div class="stat">
+                        <i class="fas fa-clock"></i>
+                        <span>6 Stunden</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-layer-group"></i>
+                        <span>10 Module</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-star"></i>
+                        <span>Grundlagen</span>
+                    </div>
+                </div>
+                <div class="topic-tags">
+                    <span class="tag">Semantik</span>
+                    <span class="tag">Accessibility</span>
+                    <span class="tag">SEO</span>
+                    <span class="tag">Struktur</span>
+                </div>
+            </div>
+
+            <div class="topic-card scroll-reveal" onclick="openModal('css')">
+                <div class="topic-icon">
+                    <i class="fab fa-css3-alt"></i>
+                </div>
+                <h3 class="topic-title">CSS3 & Animations</h3>
+                <p class="topic-description">Erschaffe beeindruckende visuelle Erlebnisse mit modernem CSS3, Flexbox, Grid und Animationen.</p>
+                <div class="topic-stats">
+                    <div class="stat">
+                        <i class="fas fa-clock"></i>
+                        <span>12 Stunden</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-layer-group"></i>
+                        <span>18 Module</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-star"></i>
+                        <span>Fortgeschritten</span>
+                    </div>
+                </div>
+                <div class="topic-tags">
+                    <span class="tag">Flexbox</span>
+                    <span class="tag">Grid</span>
+                    <span class="tag">Animationen</span>
+                    <span class="tag">Responsive</span>
+                </div>
+            </div>
+
+            <div class="topic-card scroll-reveal" onclick="openModal('javascript')">
+                <div class="topic-icon">
+                    <i class="fab fa-js-square"></i>
+                </div>
+                <h3 class="topic-title">JavaScript & ES6+</h3>
+                <p class="topic-description">Erwecke deine Webseiten zum Leben mit modernem JavaScript, APIs und interaktiven Funktionen.</p>
+                <div class="topic-stats">
+                    <div class="stat">
+                        <i class="fas fa-clock"></i>
+                        <span>15 Stunden</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-layer-group"></i>
+                        <span>20 Module</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-star"></i>
+                        <span>Fortgeschritten</span>
+                    </div>
+                </div>
+                <div class="topic-tags">
+                    <span class="tag">ES6+</span>
+                    <span class="tag">DOM</span>
+                    <span class="tag">APIs</span>
+                    <span class="tag">Async</span>
+                </div>
+            </div>
+
+            <div class="topic-card scroll-reveal" onclick="openModal('php')">
+                <div class="topic-icon">
+                    <i class="fab fa-php"></i>
+                </div>
+                <h3 class="topic-title">PHP & Backend</h3>
+                <p class="topic-description">Entwickle dynamische Webanwendungen mit PHP, Datenbanken und serverseitiger Programmierung.</p>
+                <div class="topic-stats">
+                    <div class="stat">
+                        <i class="fas fa-clock"></i>
+                        <span>14 Stunden</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-layer-group"></i>
+                        <span>16 Module</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-star"></i>
+                        <span>Experte</span>
+                    </div>
+                </div>
+                <div class="topic-tags">
+                    <span class="tag">MySQL</span>
+                    <span class="tag">PDO</span>
+                    <span class="tag">Sessions</span>
+                    <span class="tag">Security</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game Section -->
+    <section class="section" id="game">
+        <div class="game-section scroll-reveal">
+            <div class="game-header">
+                <h2 class="game-title">Color Match Challenge</h2>
+                <p>Teste dein Farbwissen und trainiere dein Designer-Auge!</p>
+                <div class="game-score">Score: <span id="score">0</span></div>
+            </div>
+
+            <div class="color-display" id="colorDisplay"></div>
+
+            <div class="game-options" id="gameOptions">
+                <!-- Dynamisch generiert -->
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="btn btn-primary" onclick="startNewGame()">
+                    <i class="fas fa-redo"></i>
+                    Neues Spiel starten
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Termine Section -->
+    <section class="section" id="termine">
+        <div class="section-header scroll-reveal">
+            <h2 class="section-title">Aktuelle Termine</h2>
+            <p class="section-subtitle">Wichtige Klassenarbeiten und Termine im Überblick</p>
+        </div>
+
+        <div class="termine-container scroll-reveal">
+            <div class="termine-table-wrapper">
+                <h3 style="color: #4facfe; margin-bottom: 1.5rem; font-size: 1.5rem;">Anstehende Klassenarbeiten</h3>
+                <div class="table-container">
+                    <table class="termine-table">
+                        <thead>
+                            <tr>
+                                <th>Terminart</th>
+                                <th>Dozent</th>
+                                <th>Datum</th>
+                                <th>Themen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="termin-type klausur">Klausur</span></td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td><span class="termin-type test">Test</span></td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td><span class="termin-type projekt">Projekt</span></td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td><span class="termin-type klausur">Klausur</span></td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="weitere-termine">
+                <h3 style="color: #667eea; margin-bottom: 1.5rem; font-size: 1.5rem;">Weitere wichtige Termine</h3>
+                <ul class="termine-liste">
+                    <li class="termin-item">
+                        <div class="termin-date">10.07.2025</div>
+                        <div class="termin-content">
+                            <strong>Exkursion zur Druckerei</strong>
+                            <span>Ab 13:00 Uhr, MEG 52, MEG53, MEG54</span>
+                        </div>
+                    </li>
+                    <li class="termin-item">
+                        <div class="termin-date">-</div>
+                        <div class="termin-content">
+                            <strong>-</strong>
+                            <span>-</span>
+                        </div>
+                    </li>
+                    <li class="termin-item">
+                        <div class="termin-date">-</div>
+                        <div class="termin-content">
+                            <strong>-</strong>
+                            <span>-</span>
+                        </div>
+                    </li>
+                    <li class="termin-item">
+                        <div class="termin-date">-</div>
+                        <div class="termin-content">
+                            <strong>-</strong>
+                            <span>-</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modals -->
+    <div id="typography" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fas fa-font"></i>
+                    Typografie Masterclass
+                </div>
+                <button class="modal-close" onclick="closeModal('typography')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <p>Typografie ist weit mehr als nur die Auswahl einer Schriftart. Es ist die Kunst, Sprache sichtbar zu machen und Emotionen durch Buchstaben zu vermitteln. In diesem umfassenden Kurs lernst du alle Aspekte professioneller Typografie.</p>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Grundlagen der Typografie</h3>
+                    <ul>
+                        <li>Schriftklassifikation: Serif, Sans-Serif, Script, Display und Decorative</li>
+                        <li>Anatomie der Schrift: Versalhöhe, x-Höhe, Grundlinie, Ober- und Unterlängen</li>
+                        <li>Typografische Maßeinheiten: Punkt, Pica, Em, Rem</li>
+                        <li>Laufweite (Tracking) und Zeichenabstand (Kerning)</li>
+                        <li>Zeilenabstand (Leading) und Zeilenlänge</li>
+                        <li>Textausrichtung und Flattersatz vs. Blocksatz</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Erweiterte Techniken</h3>
+                    <ul>
+                        <li>Typografische Hierarchie und Informationsarchitektur</li>
+                        <li>Schriftmischung und Schriftkombinationen</li>
+                        <li>Mikrotypografie: Ligaturen, Kapitälchen, Zahlenformen</li>
+                        <li>Responsive Typografie und Variable Fonts</li>
+                        <li>Typografie für verschiedene Medien (Print, Web, Mobile)</li>
+                        <li>Barrierefreie Typografie und Lesbarkeit</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Praktische Anwendung</h3>
+                    <ul>
+                        <li>Corporate Design und Markenidentität</li>
+                        <li>Editorial Design: Bücher, Magazine, Zeitungen</li>
+                        <li>Web Typography: CSS, Web Fonts, Performance</li>
+                        <li>Typografie in der Werbung und im Marketing</li>
+                        <li>Internationale Typografie und Mehrsprachigkeit</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Tools & Ressourcen</h3>
+                    <div class="resources-grid">
+                        <a href="https://fonts.google.com" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                Google Fonts
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Über 1400 kostenlose Web-Schriftarten für deine Projekte</div>
+                        </a>
+                        <a href="https://www.typography.com" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                Typography.com
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Professionelle Schriftarten von Hoefler&Co</div>
+                        </a>
+                        <a href="https://practicaltypography.com" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                Practical Typography
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Das ultimative Online-Handbuch für Typografie</div>
+                        </a>
+                        <a href="https://fontpair.co" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                FontPair
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Perfekte Schriftkombinationen für deine Designs</div>
+                        </a>
+                        <a href="https://type-scale.com" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                Type Scale
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Harmonische Schriftgrößen-Verhältnisse erstellen</div>
+                        </a>
+                        <a href="https://www.typewolf.com" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                Typewolf
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Inspiration und Trends in der Web-Typografie</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="design" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fas fa-palette"></i>
+                    Gestaltung & Design
+                </div>
+                <button class="modal-close" onclick="closeModal('design')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <p>Design ist die Sprache der visuellen Kommunikation. Hier lernst du die fundamentalen Prinzipien, die großartiges Design ausmachen, und wie du sie in deinen eigenen Projekten anwendest.</p>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Gestaltungsgesetze</h3>
+                    <ul>
+                        <li>Gesetz der Nähe: Verwandte Elemente gruppieren</li>
+                        <li>Gesetz der Ähnlichkeit: Gleiche Eigenschaften schaffen Zusammenhang</li>
+                        <li>Gesetz der Geschlossenheit: Das Auge vervollständigt Formen</li>
+                        <li>Gesetz der Kontinuität: Fließende Linien und Bewegung</li>
+                        <li>Figur-Grund-Beziehung: Vordergrund und Hintergrund</li>
+                        <li>Gesetz der Symmetrie: Balance und Harmonie</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Farbtheorie & Psychologie</h3>
+                    <ul>
+                        <li>Farbkreis und Farbharmonien (Komplementär, Triadisch, Analog)</li>
+                        <li>Farbpsychologie und emotionale Wirkung</li>
+                        <li>Farbkontraste: Hell-Dunkel, Warm-Kalt, Komplementär</li>
+                        <li>Farbsysteme: RGB, CMYK, HSL, LAB</li>
+                        <li>Barrierefreie Farbgestaltung und Kontrastverhältnisse</li>
+                        <li>Kulturelle Bedeutung von Farben</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Layout & Komposition</h3>
+                    <ul>
+                        <li>Goldener Schnitt und Drittel-Regel</li>
+                        <li>Raster und Layoutsysteme</li>
+                        <li>Weißraum (Negative Space) effektiv nutzen</li>
+                        <li>Visuelle Hierarchie und Informationsarchitektur</li>
+                        <li>Balance: Symmetrisch vs. Asymmetrisch</li>
+                        <li>Rhythmus und Wiederholung</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Design-Tools & Workflow</h3>
+                    <div class="resources-grid">
+                        <a href="https://color.adobe.com" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                Adobe Color
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Professionelle Farbpaletten erstellen und teilen</div>
+                        </a>
+                        <a href="https://coolors.co" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                Coolors
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Schneller Farbschema-Generator mit Export-Funktionen</div>
+                        </a>
+                        <a href="https://dribbble.com" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                Dribbble
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Design-Inspiration von weltweiten Kreativen</div>
+                        </a>
+                        <a href="https://www.behance.net" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                Behance
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Portfolio-Plattform für kreative Projekte</div>
+                        </a>
+                        <a href="https://www.canva.com/colors/color-wheel/" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                Canva Color Wheel
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Interaktiver Farbkreis mit Harmonien</div>
+                        </a>
+                        <a href="https://www.designspiration.com" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                Designspiration
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Kuratierte Design-Inspiration nach Farben</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="html" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fab fa-html5"></i>
+                    HTML5 & Semantik
+                </div>
+                <button class="modal-close" onclick="closeModal('html')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <p>HTML5 ist das Fundament des modernen Webs. Lerne, wie du semantische, barrierefreie und SEO-optimierte Webseiten erstellst, die sowohl für Menschen als auch für Maschinen verständlich sind.</p>
+                </div>
+
+                <div class="modal-section">
+                    <h3>HTML5 Grundlagen</h3>
+                    <ul>
+                        <li>Dokumentstruktur: DOCTYPE, html, head, body</li>
+                        <li>Meta-Tags für SEO und Social Media</li>
+                        <li>Semantische Elemente: header, nav, main, section, article, aside, footer</li>
+                        <li>Überschriften-Hierarchie (h1-h6) richtig verwenden</li>
+                        <li>Listen: ul, ol, dl für verschiedene Inhaltstypen</li>
+                        <li>Tabellen: Wann und wie man sie richtig einsetzt</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Formulare & Interaktion</h3>
+                    <ul>
+                        <li>Moderne Input-Typen: email, tel, date, color, range</li>
+                        <li>Formular-Validierung mit HTML5-Attributen</li>
+                        <li>Labels, Fieldsets und Accessibility</li>
+                        <li>Custom Form Controls und Styling</li>
+                        <li>Progressive Enhancement für Formulare</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Multimedia & APIs</h3>
+                    <ul>
+                        <li>Responsive Images: srcset, sizes, picture-Element</li>
+                        <li>Audio und Video: native Player und Custom Controls</li>
+                        <li>Canvas für 2D-Grafiken und Animationen</li>
+                        <li>SVG: Skalierbare Vektorgrafiken inline</li>
+                        <li>Web APIs: Geolocation, Local Storage, Service Worker</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Accessibility & SEO</h3>
+                    <ul>
+                        <li>ARIA-Attribute für Screen Reader</li>
+                        <li>Keyboard Navigation und Focus Management</li>
+                        <li>Alt-Texte und beschreibende Inhalte</li>
+                        <li>Structured Data und Schema.org</li>
+                        <li>Performance: Lazy Loading, Critical CSS</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Tools & Validierung</h3>
+                    <div class="resources-grid">
+                        <a href="https://validator.w3.org" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                W3C HTML Validator
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Offizieller HTML-Validator des W3C</div>
+                        </a>
+                        <a href="https://developer.mozilla.org/de/docs/Web/HTML" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                MDN HTML Docs
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Umfassende HTML-Dokumentation von Mozilla</div>
+                        </a>
+                        <a href="https://www.w3schools.com/html/" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                W3Schools HTML
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Interaktive HTML-Tutorials und Beispiele</div>
+                        </a>
+                        <a href="https://caniuse.com" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                Can I Use
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Browser-Kompatibilität für HTML5-Features</div>
+                        </a>
+                        <a href="https://html5boilerplate.com" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                HTML5 Boilerplate
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Professionelle HTML5-Vorlage für Projekte</div>
+                        </a>
+                        <a href="https://wave.webaim.org" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                WAVE Accessibility
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Barrierefreiheit-Checker für Webseiten</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="css" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fab fa-css3-alt"></i>
+                    CSS3 & Animations
+                </div>
+                <button class="modal-close" onclick="closeModal('css')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <p>CSS3 verwandelt deine HTML-Struktur in visuell beeindruckende Erlebnisse. Meistere moderne Layout-Techniken, Animationen und responsive Design für alle Geräte.</p>
+                </div>
+
+                <div class="modal-section">
+                    <h3>CSS Grundlagen & Selektoren</h3>
+                    <ul>
+                        <li>CSS-Syntax und Kaskade verstehen</li>
+                        <li>Spezifität und Vererbung meistern</li>
+                        <li>Erweiterte Selektoren: nth-child, attribute, pseudo-classes</li>
+                        <li>CSS Custom Properties (Variablen)</li>
+                        <li>Box Model: margin, border, padding, content</li>
+                        <li>Display-Modi: block, inline, inline-block, none</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Moderne Layout-Techniken</h3>
+                    <ul>
+                        <li>Flexbox: eindimensionale Layouts meistern</li>
+                        <li>CSS Grid: zweidimensionale Layout-Systeme</li>
+                        <li>Positioning: static, relative, absolute, fixed, sticky</li>
+                        <li>Float und Clear (Legacy-Techniken verstehen)</li>
+                        <li>Multi-Column Layout für Textspalten</li>
+                        <li>Container Queries für komponentenbasiertes Design</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Responsive Design</h3>
+                    <ul>
+                        <li>Mobile-First Approach und Breakpoints</li>
+                        <li>Media Queries: min-width, max-width, orientation</li>
+                        <li>Flexible Einheiten: em, rem, vw, vh, %</li>
+                        <li>Responsive Images und Art Direction</li>
+                        <li>Touch-optimierte Interfaces</li>
+                        <li>Performance-Optimierung für mobile Geräte</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Animationen & Effekte</h3>
+                    <ul>
+                        <li>CSS Transitions für sanfte Übergänge</li>
+                        <li>Keyframe-Animationen erstellen</li>
+                        <li>Transform: translate, rotate, scale, skew</li>
+                        <li>3D-Transformationen und Perspective</li>
+                        <li>Filter-Effekte: blur, brightness, contrast</li>
+                        <li>Scroll-basierte Animationen</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>CSS Tools & Frameworks</h3>
+                    <div class="resources-grid">
+                        <a href="https://css-tricks.com" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                CSS-Tricks
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Die ultimative CSS-Ressource mit Tutorials und Tricks</div>
+                        </a>
+                        <a href="https://flexboxfroggy.com" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                Flexbox Froggy
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Spielerisch Flexbox lernen mit dem Frosch</div>
+                        </a>
+                        <a href="https://cssgridgarden.com" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                CSS Grid Garden
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">CSS Grid durch Gärtnern lernen</div>
+                        </a>
+                        <a href="https://animate.style" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                Animate.css
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Ready-to-use CSS-Animationen</div>
+                        </a>
+                        <a href="https://tailwindcss.com" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                Tailwind CSS
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Utility-First CSS Framework</div>
+                        </a>
+                        <a href="https://codepen.io" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                CodePen
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Online CSS-Editor für Experimente und Prototyping</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="javascript" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fab fa-js-square"></i>
+                    JavaScript & ES6+
+                </div>
+                <button class="modal-close" onclick="closeModal('javascript')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <p>JavaScript ist die Programmiersprache des Webs. Von einfachen Interaktionen bis hin zu komplexen Single-Page-Applications - hier lernst du alles für moderne Webentwicklung.</p>
+                </div>
+
+                <div class="modal-section">
+                    <h3>JavaScript Fundamentals</h3>
+                    <ul>
+                        <li>Variablen: var, let, const und Scope-Regeln</li>
+                        <li>Datentypen: Primitives und Objects</li>
+                        <li>Funktionen: Declarations, Expressions, Arrow Functions</li>
+                        <li>Objekte und Arrays: Manipulation und Methoden</li>
+                        <li>Kontrollstrukturen: if/else, switch, loops</li>
+                        <li>Error Handling: try/catch/finally</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>DOM Manipulation & Events</h3>
+                    <ul>
+                        <li>DOM-Selektion: querySelector, getElementById</li>
+                        <li>Element-Manipulation: innerHTML, textContent, classList</li>
+                        <li>Event-Handling: addEventListener, Event-Objekt</li>
+                        <li>Event-Delegation und Bubbling</li>
+                        <li>Dynamisches Erstellen von Elementen</li>
+                        <li>Formular-Validierung und -Handling</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>ES6+ Features</h3>
+                    <ul>
+                        <li>Template Literals und String Interpolation</li>
+                        <li>Destructuring: Arrays und Objects</li>
+                        <li>Spread/Rest Operator (...)</li>
+                        <li>Modules: import/export</li>
+                        <li>Classes und Inheritance</li>
+                        <li>Promises, async/await für asynchrone Programmierung</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>APIs & AJAX</h3>
+                    <ul>
+                        <li>Fetch API für HTTP-Requests</li>
+                        <li>JSON: Parsing und Stringifying</li>
+                        <li>REST APIs konsumieren</li>
+                        <li>Local Storage und Session Storage</li>
+                        <li>Geolocation API</li>
+                        <li>Web Workers für Background-Processing</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>JavaScript Ressourcen</h3>
+                    <div class="resources-grid">
+                        <a href="https://javascript.info" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                JavaScript.info
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Das umfassendste JavaScript-Tutorial im Web</div>
+                        </a>
+                        <a href="https://www.freecodecamp.org" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                freeCodeCamp
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Kostenlose interaktive JavaScript-Kurse</div>
+                        </a>
+                        <a href="https://eloquentjavascript.net" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                Eloquent JavaScript
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Kostenloses Buch über moderne JavaScript-Programmierung</div>
+                        </a>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                MDN JavaScript
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Offizielle JavaScript-Dokumentation</div>
+                        </a>
+                        <a href="https://www.codecademy.com/learn/introduction-to-javascript" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                Codecademy JS
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Interaktiver JavaScript-Kurs für Anfänger</div>
+                        </a>
+                        <a href="https://github.com/getify/You-Dont-Know-JS" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                You Don't Know JS
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Tiefgreifende JavaScript-Buchserie auf GitHub</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="php" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fab fa-php"></i>
+                    PHP & Backend Development
+                </div>
+                <button class="modal-close" onclick="closeModal('php')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <p>PHP ist eine der wichtigsten Server-seitigen Programmiersprachen. Lerne, wie du dynamische Webanwendungen entwickelst, Datenbanken anbindest und sichere Backend-Systeme erstellst.</p>
+                </div>
+
+                <div class="modal-section">
+                    <h3>PHP Grundlagen</h3>
+                    <ul>
+                        <li>PHP-Syntax: Tags, Variablen, Konstanten</li>
+                        <li>Datentypen: String, Integer, Float, Boolean, Array</li>
+                        <li>Kontrollstrukturen: if/else, switch, loops</li>
+                        <li>Funktionen: Definition, Parameter, Return Values</li>
+                        <li>Include/Require: Code-Organisation</li>
+                        <li>Error Handling und Debugging</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Objektorientierte Programmierung</h3>
+                    <ul>
+                        <li>Klassen und Objekte erstellen</li>
+                        <li>Eigenschaften und Methoden</li>
+                        <li>Vererbung und Polymorphismus</li>
+                        <li>Interfaces und Abstract Classes</li>
+                        <li>Namespaces und Autoloading</li>
+                        <li>Design Patterns in PHP</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Webentwicklung mit PHP</h3>
+                    <ul>
+                        <li>HTTP-Requests: GET, POST, PUT, DELETE</li>
+                        <li>Formulardatenverarbeitung und Validierung</li>
+                        <li>Session- und Cookie-Management</li>
+                        <li>Datei-Upload und -verarbeitung</li>
+                        <li>URL-Routing und MVC-Pattern</li>
+                        <li>Template-Engines: Twig, Smarty</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Datenbank-Integration</h3>
+                    <ul>
+                        <li>MySQL-Grundlagen und SQL-Queries</li>
+                        <li>PDO (PHP Data Objects) für sichere Datenbankverbindungen</li>
+                        <li>CRUD-Operationen: Create, Read, Update, Delete</li>
+                        <li>Prepared Statements gegen SQL-Injection</li>
+                        <li>Datenbank-Design und Normalisierung</li>
+                        <li>ORM-Systeme: Eloquent, Doctrine</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Sicherheit & Best Practices</h3>
+                    <ul>
+                        <li>Input-Validierung und -Sanitization</li>
+                        <li>XSS (Cross-Site Scripting) Prevention</li>
+                        <li>CSRF (Cross-Site Request Forgery) Protection</li>
+                        <li>Password Hashing: password_hash(), password_verify()</li>
+                        <li>HTTPS und sichere Datenübertragung</li>
+                        <li>Rate Limiting und DDoS-Schutz</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>PHP Frameworks & Tools</h3>
+                    <div class="resources-grid">
+                        <a href="https://www.php.net" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                PHP.net
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Offizielle PHP-Dokumentation und Downloads</div>
+                        </a>
+                        <a href="https://laravel.com" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                Laravel
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Das elegante PHP-Framework für Webentwickler</div>
+                        </a>
+                        <a href="https://laracasts.com" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                Laracasts
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Premium PHP- und Laravel-Video-Tutorials</div>
+                        </a>
+                        <a href="https://phpdelusions.net" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                PHP Delusions
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Best Practices und häufige PHP-Fehler vermeiden</div>
+                        </a>
+                        <a href="https://symfony.com" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                Symfony
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">High-Performance PHP-Framework für Enterprise</div>
+                        </a>
+                        <a href="https://getcomposer.org" target="_blank" class="resource-card">
+                            <div class="resource-title">
+                                Composer
+                                <i class="fas fa-external-link-alt"></i>
+                            </div>
+                            <div class="resource-description">Dependency Manager für PHP-Projekte</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>MEG 52</h3>
+                <p>Die beste Mediengestalterklasse seit 1753</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#topics">Lernthemen</a></li>
+                    <li><a href="#termine">Termine</a></li>
+                    <li><a href="#game">Color Match</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Rechtliches</h4>
+                <ul>
+                    <li><a href="#" onclick="openModal('impressum')">Impressum</a></li>
+                    <li><a href="#" onclick="openModal('datenschutz')">Datenschutz</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 MEG 52 Virtual Classroom. Erstellt für Bildungszwecke.</p>
+        </div>
+    </footer>
+
+    <!-- Impressum Modal -->
+    <div id="impressum" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fas fa-info-circle"></i>
+                    Impressum
+                </div>
+                <button class="modal-close" onclick="closeModal('impressum')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <h3>Angaben gemäß § 5 TMG</h3>
+                    <p>
+                        <strong>Simon van de Loo</strong><br>
+                        Bahnhofstraße 5<br>
+                        56237 Alsbach<br>
+                        Deutschland
+                    </p>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Kontakt</h3>
+                    <p>
+                        E-Mail: <a href="mailto:Simon@hinterhofagentur.de" style="color: #4facfe;">Simon@hinterhofagentur.de</a>
+                    </p>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Zweck der Website</h3>
+                    <p>
+                        Diese Website wurde ausschließlich für Bildungszwecke der Mediengestalter-Klasse MEG 52 erstellt. 
+                        Sie dient als virtuelles Klassenzimmer und Lernplattform für die Teilnehmer der Umschulungsmaßnahme.
+                    </p>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Haftungsausschluss</h3>
+                    <p>
+                        Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, 
+                        Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Datenschutz Modal -->
+    <div id="datenschutz" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fas fa-shield-alt"></i>
+                    Datenschutzerklärung
+                </div>
+                <button class="modal-close" onclick="closeModal('datenschutz')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <h3>Datenschutz auf einen Blick</h3>
+                    <p>
+                        Diese Website wurde ausschließlich für eine Schulklasse erstellt und sammelt keine persönlichen Daten. 
+                        Wir verwenden keine Cookies, keine Tracking-Tools und keine externen Dienste, die Daten sammeln könnten.
+                    </p>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Welche Daten erfassen wir?</h3>
+                    <ul>
+                        <li><strong>Keine persönlichen Daten:</strong> Diese Website sammelt keine Namen, E-Mail-Adressen oder andere persönliche Informationen.</li>
+                        <li><strong>Keine Cookies:</strong> Wir setzen keine Cookies auf Ihrem Gerät.</li>
+                        <li><strong>Keine Tracking-Tools:</strong> Wir verwenden keine Analyse-Tools wie Google Analytics.</li>
+                        <li><strong>Lokale Speicherung:</strong> Das Color Match Spiel speichert Ihren Score nur lokal in Ihrem Browser.</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Externe Links</h3>
+                    <p>
+                        Diese Website enthält Links zu externen Diensten wie Google Drive, Moodle und anderen Lernplattformen. 
+                        Für diese externen Dienste gelten deren eigene Datenschutzbestimmungen.
+                    </p>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Kontakt</h3>
+                    <p>
+                        Bei Fragen zum Datenschutz wenden Sie sich an:<br>
+                        <a href="mailto:Simon@hinterhofagentur.de" style="color: #4facfe;">Simon@hinterhofagentur.de</a>
+                    </p>
+                </div>
+
+                <div class="modal-section">
+                    <h3>Änderungen</h3>
+                    <p>
+                        Diese Datenschutzerklärung kann bei Bedarf aktualisiert werden. 
+                        Die aktuelle Version ist immer auf dieser Website verfügbar.
+                    </p>
+                    <p><small>Stand: Januar 2025</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game Logic
+        let score = 0;
+        let currentColor = null;
+        const colors = [
+            { name: 'Rot', value: '#FF0000', hex: '#FF0000' },
+            { name: 'Grün', value: '#00FF00', hex: '#00FF00' },
+            { name: 'Blau', value: '#0000FF', hex: '#0000FF' },
+            { name: 'Gelb', value: '#FFFF00', hex: '#FFFF00' },
+            { name: 'Magenta', value: '#FF00FF', hex: '#FF00FF' },
+            { name: 'Cyan', value: '#00FFFF', hex: '#00FFFF' },
+            { name: 'Orange', value: '#FFA500', hex: '#FFA500' },
+            { name: 'Lila', value: '#800080', hex: '#800080' },
+            { name: 'Rosa', value: '#FFC0CB', hex: '#FFC0CB' },
+            { name: 'Braun', value: '#A52A2A', hex: '#A52A2A' },
+            { name: 'Grau', value: '#808080', hex: '#808080' },
+            { name: 'Schwarz', value: '#000000', hex: '#000000' }
+        ];
+
+        function startNewGame() {
+            score = 0;
+            updateScore();
+            generateColorQuestion();
+        }
+
+        function generateColorQuestion() {
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            currentColor = randomColor;
+            
+            const colorDisplay = document.getElementById('colorDisplay');
+            colorDisplay.style.backgroundColor = randomColor.value;
+            colorDisplay.textContent = randomColor.hex;
+            
+            // Generate 4 options including the correct one
+            const options = [randomColor.name];
+            while(options.length < 4) {
+                const randomOption = colors[Math.floor(Math.random() * colors.length)].name;
+                if(!options.includes(randomOption)) {
+                    options.push(randomOption);
+                }
+            }
+            
+            // Shuffle options
+            options.sort(() => Math.random() - 0.5);
+            
+            const optionsContainer = document.getElementById('gameOptions');
+            optionsContainer.innerHTML = '';
+            
+            options.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'game-option';
+                button.textContent = option;
+                button.onclick = () => checkAnswer(option, button);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selectedColor, buttonElement) {
+            const allButtons = document.querySelectorAll('.game-option');
+            
+            if(selectedColor === currentColor.name) {
+                score += 10;
+                updateScore();
+                buttonElement.classList.add('correct');
+                
+                setTimeout(() => {
+                    generateColorQuestion();
+                }, 1000);
+            } else {
+                score = Math.max(0, score - 5);
+                updateScore();
+                buttonElement.classList.add('incorrect');
+                
+                // Show correct answer
+                allButtons.forEach(btn => {
+                    if(btn.textContent === currentColor.name) {
+                        btn.classList.add('correct');
+                    }
+                });
+                
+                setTimeout(() => {
+                    generateColorQuestion();
+                }, 1500);
+            }
+            
+            // Disable all buttons temporarily
+            allButtons.forEach(btn => btn.disabled = true);
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+        }
+
+        // Modal Functions
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        }
+
+        // Navigation Functions
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if(target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Particle System
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.animationDelay = Math.random() * 2 + 's';
+            particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+            
+            document.getElementById('particles').appendChild(particle);
+            
+            // Remove particle after animation
+            setTimeout(() => {
+                if (particle.parentNode) {
+                    particle.parentNode.removeChild(particle);
+                }
+            }, 8000);
+        }
+
+        // Create particles periodically
+        setInterval(createParticle, 200);
+
+        // Scroll Animations
+        function handleScrollAnimations() {
+            const elements = document.querySelectorAll('.scroll-reveal');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('revealed');
+                }
+            });
+        }
+
+        // Header scroll effect
+        function handleHeaderScroll() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        }
+
+        // Event Listeners
+        window.addEventListener('scroll', () => {
+            handleScrollAnimations();
+            handleHeaderScroll();
+        });
+
+        window.addEventListener('load', () => {
+            startNewGame();
+            handleScrollAnimations();
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const openModal = document.querySelector('.modal[style*="block"]');
+                if (openModal) {
+                    openModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
